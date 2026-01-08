@@ -1,0 +1,260 @@
+erDiagram
+
+    %% =============================
+    %% STUDENT MODULE
+    %% =============================
+    STUDENTS {
+        int id PK
+        string student_code
+        string name_kh
+        string name_en
+        string gender
+        date dob
+        string address
+        string phone
+        string email
+        string from_school
+        string father_name
+        string mother_name
+        string guardian_phone
+        string profile
+        int status_id FK
+        int role_id FK
+        string other
+    }
+
+    STUDENT_STATUS {
+        int id PK
+        string status_kh
+        string status_en
+        string other
+    }
+
+    STUDENT_CLASS {
+        int id PK
+        int student_id FK
+        int from_class_id FK
+        boolean is_duplicate
+        string other
+    }
+
+    STUDENT_ROLE {
+        int id PK
+        string name
+        string note
+    }
+
+    %% =============================
+    %% CLASS MODULE
+    %% =============================
+    CLASSES {
+        int id PK
+        int class_type_id FK
+        int grade_level_id FK
+        int academic_id FK
+        string other
+    }
+
+    CLASS_TYPE {
+        int id PK
+        string name
+        string note
+    }
+
+    GRADE_LEVEL {
+        int id PK
+        string name
+        string note
+    }
+
+    ACADEMIC_YEAR {
+        int id PK
+        string name
+        date start_date
+        date end_date
+        string note
+    }
+
+    %% =============================
+    %% SUBJECT MODULE
+    %% =============================
+    SUBJECT {
+        int id PK
+        string name_kh
+        string name_en
+        string note
+    }
+
+    SUBJECT_GRADE_LEVEL {
+        int id PK
+        int subject_id FK
+        int grade_level_id FK
+        int class_type_id FK
+        int full_score
+        double divide
+        double average
+    }
+
+    %% =============================
+    %% SCORE MODULE
+    %% =============================
+    SCORE {
+        int id PK
+        int class_id FK
+        int score_type_id FK
+    }
+
+    SCORE_LINE {
+        int id PK
+        int score_id FK
+        int student_id FK
+        int subject_grade_id FK
+        string mark
+    }
+
+    SCORE_TYPE {
+        int id PK
+        string name
+        date date
+    }
+
+    %% =============================
+    %% TEACHER MODULE
+    %% =============================
+    TEACHER {
+        int id PK
+        string name_kh
+        string name_en
+        string gender
+        date dob
+        date join_date
+        string level
+        string address
+        string phone
+        string email
+        string profile
+        boolean is_enable_account
+        int status_id FK
+        string other
+    }
+
+    TEACHER_STATUS {
+        int id PK
+        string status_kh
+        string status_en
+        string other
+    }
+
+    TEACHER_CLASS {
+        int id PK
+        int teacher_id FK
+        int class_id FK
+        int subject_grade_id FK
+        int role_id FK
+    }
+
+   TEACHER_ROLE {
+        int id PK
+        string name
+        string note
+    }
+    %% =============================
+    %% SCHEDULE MODULE
+    %% =============================
+    SCHEDULE {
+        int id PK
+        int class_id FK
+    }
+
+    SCHEDULE_LINE {
+        int id PK
+        int schedule_id FK
+        int time_id FK
+        int day_id FK
+        int subject_grade_id FK
+    }
+
+    TIME {
+        int id PK
+        string name
+        time start_time
+        time end_time
+    }
+
+    WEEK_DAY {
+        int id PK
+        string name_kh
+        string name_en
+    }
+
+    %% =============================
+    %% ATTENDANCE MODULE
+    %% =============================
+    ATTENDANCE {
+       int id PK
+       int class_id FK
+       int time_id FK
+       int day_id FK
+       int subject_grade_id FK
+       int teacher_id FK
+    }
+
+    ATTENDANCE_LINE {
+       int id PK
+       int attendance_id FK
+       int student_id FK
+       int attendance_type_id FK
+    }
+
+    ATTENDANCE_TYPE {
+       int id PK
+       string name
+       string note
+    }
+
+    %% =============================
+    %% USER & AUTH MODULE
+    %% =============================
+    USERS {
+        int id PK
+        string username
+        string password_hash
+        string email
+        int role_id FK
+        int teacher_id FK
+    }
+
+    ROLES {
+        int id PK
+        string name
+    }
+
+    %% =============================
+    %% RELATIONSHIPS
+    %% =============================
+
+    STUDENTS ||--o{ STUDENT_CLASS : has
+    STUDENT_STATUS ||--o{ STUDENTS : status
+    GRADE_LEVEL ||--o{ SUBJECT_GRADE_LEVEL : has
+    SUBJECT ||--o{ SUBJECT_GRADE_LEVEL : has
+    CLASS_TYPE ||--o{ SUBJECT_GRADE_LEVEL : has
+    CLASSES ||--o{ STUDENT_CLASS : assigns
+    CLASSES ||--o{ SCORE : has
+    SCORE ||--o{ SCORE_LINE : details
+    SCORE_TYPE ||--o{ SCORE : type
+    TEACHER ||--o{ TEACHER_CLASS : teaches
+    CLASSES ||--o{ TEACHER_CLASS : class_of
+    SUBJECT_GRADE_LEVEL ||--o{ TEACHER_CLASS : subject
+    CLASSES ||--o{ SCHEDULE : has
+    SCHEDULE ||--o{ SCHEDULE_LINE : includes
+    TIME ||--o{ SCHEDULE_LINE : at
+    WEEK_DAY ||--o{ SCHEDULE_LINE : day
+    ATTENDANCE ||--o{ ATTENDANCE_LINE : details
+    CLASS_TYPE ||--o{ CLASSES : type
+    GRADE_LEVEL ||--o{ CLASSES : level
+    ACADEMIC ||--o{ CLASSES : academic
+    ROLES ||--o{ USERS : has
+    TEACHER ||--o{ USERS : account
+    TEACHER_ROLE ||--o{ TEACHER_CLASS : role
+    TEACHER_STATUS ||--o{ TEACHER : status
+    ATTENDANCE_TYPE ||--o{ ATTENDANCE_LINE : type

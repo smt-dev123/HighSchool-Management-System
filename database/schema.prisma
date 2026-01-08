@@ -1,0 +1,348 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================
+// PICTURE TABLE (ADDED)
+// =============================
+model Picture {
+  id        Int      @id @default(autoincrement())
+  url       String
+  alt       String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  student   Student?
+  teacher   Teacher?
+  user      User?
+}
+
+
+// =============================
+// STUDENT MODULE
+// =============================
+model Student {
+  id            Int             @id @default(autoincrement())
+  student_code  String
+  name_kh       String
+  name_en       String
+  gender        String
+  dob           DateTime
+  address       String?
+  phone         String?
+  email         String?
+  from_school   String?
+  father_name   String?
+  mother_name   String?
+  guardian_phone String?
+  other         String?
+
+  status_id Int
+  role_id   Int   
+  profileId Int?  @unique
+
+  // Relations
+  status     StudentStatus @relation(fields: [status_id], references: [id])
+  role       Role          @relation(fields: [role_id], references: [id])
+  profile    Picture?      @relation(fields: [profileId], references: [id])
+  classes    StudentClass[]
+  scoreLines ScoreLine[]
+  attendance AttendanceLine[]
+}
+
+model StudentStatus {
+  id         Int       @id @default(autoincrement())
+  status_kh  String?
+  status_en  String?
+  other      String?
+  students   Student[]
+}
+
+model StudentClass {
+  id            Int     @id @default(autoincrement())
+  student_id    Int
+  from_class_id Int
+  is_duplicate  Boolean @default(false)
+  other         String?
+
+  student Student @relation(fields: [student_id], references: [id])
+  class   Class  @relation(fields: [from_class_id], references: [id])
+}
+
+
+// =============================
+// TEACHER MODULE
+// =============================
+model Teacher {
+  id               Int      @id @default(autoincrement())
+  name_kh          String
+  name_en          String
+  gender           String
+  dob              DateTime
+  join_date        DateTime
+  level            String?
+  address          String?
+  phone            String?
+  email            String?
+  is_enable_account Boolean @default(true)
+  other            String?
+
+  status_id Int
+  profileId Int?  @unique
+
+  status   TeacherStatus @relation(fields: [status_id], references: [id])
+  profile  Picture?      @relation(fields: [profileId], references: [id])
+  classes  TeacherClass[]
+  users    User[]
+  attendance Attendance[]
+}
+
+model TeacherStatus {
+  id         Int       @id @default(autoincrement())
+  status_kh  String?
+  status_en  String?
+  other      String?
+  teachers   Teacher[]
+}
+
+model TeacherRole {
+  id    Int    @id @default(autoincrement())
+  name  String
+  note  String?
+  class TeacherClass[]
+}
+
+model TeacherClass {
+  id              Int  @id @default(autoincrement())
+  teacher_id      Int
+  class_id        Int
+  subject_grade_id Int
+  role_id         Int
+
+  teacher Teacher          @relation(fields: [teacher_id], references: [id])
+  class   Class            @relation(fields: [class_id], references: [id])
+  subject SubjectGradeLevel @relation(fields: [subject_grade_id], references: [id])
+  role    TeacherRole      @relation(fields: [role_id], references: [id])
+}
+
+
+// =============================
+// CLASS MODULE
+// =============================
+model Class {
+  id            Int     @id @default(autoincrement())
+  class_type_id Int
+  grade_level_id Int
+  academic_id   Int
+  other         String?
+
+  classType   ClassType  @relation(fields: [class_type_id], references: [id])
+  gradeLevel  GradeLevel @relation(fields: [grade_level_id], references: [id])
+  academic    Academic   @relation(fields: [academic_id], references: [id])
+
+  students    StudentClass[]
+  teachers    TeacherClass[]
+  scores      Score[]
+  schedules   Schedule[]
+  attendance  Attendance[]
+}
+
+model ClassType {
+  id      Int    @id @default(autoincrement())
+  name    String
+  note    String?
+  classes Class[]
+  subjects SubjectGradeLevel[]
+}
+
+model GradeLevel {
+  id       Int    @id @default(autoincrement())
+  name     String
+  note     String?
+  classes  Class[]
+  subjects SubjectGradeLevel[]
+}
+
+model Academic {
+  id         Int      @id @default(autoincrement())
+  name       String
+  start_date DateTime
+  end_date   DateTime
+  note       String?
+  classes    Class[]
+}
+
+
+// =============================
+// SUBJECT MODULE
+// =============================
+model Subject {
+  id       Int    @id @default(autoincrement())
+  name_kh  String
+  name_en  String?
+  note     String?
+  subjects SubjectGradeLevel[]
+}
+
+model SubjectGradeLevel {
+  id             Int    @id @default(autoincrement())
+  subject_id     Int
+  grade_level_id Int
+  class_type_id  Int
+  full_score     Int
+  divide         Float
+  average        Float
+
+  subject    Subject    @relation(fields: [subject_id], references: [id])
+  gradeLevel GradeLevel @relation(fields: [grade_level_id], references: [id])
+  classType  ClassType  @relation(fields: [class_type_id], references: [id])
+
+  scoreLines ScoreLine[]
+  teachers   TeacherClass[]
+  schedule   ScheduleLine[]
+  attendance Attendance[]
+}
+
+
+// =============================
+// SCORE MODULE
+// =============================
+model Score {
+  id            Int @id @default(autoincrement())
+  class_id      Int
+  score_type_id Int
+
+  class   Class      @relation(fields: [class_id], references: [id])
+  type    ScoreType  @relation(fields: [score_type_id], references: [id])
+  lines   ScoreLine[]
+}
+
+model ScoreLine {
+  id              Int    @id @default(autoincrement())
+  score_id        Int
+  student_id      Int
+  subject_grade_id Int
+  mark            String
+
+  score   Score             @relation(fields: [score_id], references: [id])
+  student Student           @relation(fields: [student_id], references: [id])
+  subject SubjectGradeLevel @relation(fields: [subject_grade_id], references: [id])
+}
+
+model ScoreType {
+  id    Int    @id @default(autoincrement())
+  name  String
+  date  DateTime
+  scores Score[]
+}
+
+
+// =============================
+// SCHEDULE MODULE
+// =============================
+model Schedule {
+  id        Int @id @default(autoincrement())
+  class_id  Int
+
+  class   Class         @relation(fields: [class_id], references: [id])
+  details ScheduleLine[]
+}
+
+model ScheduleLine {
+  id              Int    @id @default(autoincrement())
+  schedule_id     Int
+  time_id         Int
+  day_id          Int
+  subject_grade_id Int
+
+  schedule Schedule          @relation(fields: [schedule_id], references: [id])
+  time     Time              @relation(fields: [time_id], references: [id])
+  day      WeekDay           @relation(fields: [day_id], references: [id])
+  subject  SubjectGradeLevel @relation(fields: [subject_grade_id], references: [id])
+}
+
+model Time {
+  id         Int     @id @default(autoincrement())
+  name       String
+  start_time DateTime
+  end_time   DateTime
+  schedules  ScheduleLine[]
+  attendance Attendance[]
+}
+
+model WeekDay {
+  id        Int    @id @default(autoincrement())
+  name_kh   String
+  name_en   String?
+  schedules ScheduleLine[]
+  attendance Attendance[]
+}
+
+
+// =============================
+// ATTENDANCE MODULE
+// =============================
+model Attendance {
+  id              Int @id @default(autoincrement())
+  class_id        Int
+  time_id         Int
+  day_id          Int
+  subject_grade_id Int
+  teacher_id      Int
+
+  class   Class             @relation(fields: [class_id], references: [id])
+  time    Time              @relation(fields: [time_id], references: [id])
+  day     WeekDay           @relation(fields: [day_id], references: [id])
+  subject SubjectGradeLevel @relation(fields: [subject_grade_id], references: [id])
+  teacher Teacher           @relation(fields: [teacher_id], references: [id])
+
+  lines AttendanceLine[]
+}
+
+model AttendanceLine {
+  id                Int @id @default(autoincrement())
+  attendance_id     Int
+  student_id        Int
+  attendance_type_id Int
+
+  attendance Attendance      @relation(fields: [attendance_id], references: [id])
+  student    Student         @relation(fields: [student_id], references: [id])
+  type       AttendanceType  @relation(fields: [attendance_type_id], references: [id])
+}
+
+model AttendanceType {
+  id     Int    @id @default(autoincrement())
+  name   String
+  note   String?
+  lines  AttendanceLine[]
+}
+
+
+// =============================
+// USER & AUTH MODULE
+// =============================
+model User {
+  id           Int    @id @default(autoincrement())
+  username     String
+  password_hash String
+  email        String?
+  role_id      Int
+  teacher_id   Int?
+  profileId    Int? @unique
+
+  role    Role    @relation(fields: [role_id], references: [id])
+  teacher Teacher? @relation(fields: [teacher_id], references: [id])
+  profile Picture? @relation(fields: [profileId], references: [id])
+}
+
+model Role {
+  id    Int     @id @default(autoincrement())
+  name  String
+  users User[]
+  students Student[]
+}
