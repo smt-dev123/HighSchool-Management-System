@@ -16,4 +16,17 @@ class Classes extends Model
         "academic_year_id",
         "other",
     ];
+
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
+    public function gradeLevel()
+    {
+        return $this->belongsTo(GradeLevel::class);
+    }
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }

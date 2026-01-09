@@ -10,7 +10,7 @@
 
     <el-dialog
         v-model="dialogVisible"
-        title="កែប្រែម៉ោងសិក្សា"
+        title="កែប្រែឆ្នាំសិក្សា"
         width="800"
         align-center
         append-to-body
@@ -19,7 +19,7 @@
             <el-row :gutter="20">
                 <!-- Field -->
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងសិក្សា">
+                    <el-form-item label="ឆ្នាំសិក្សា">
                         <el-input
                             v-model="form.name"
                             :error="form.errors.name"
@@ -27,28 +27,38 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងចាប់ផ្តើម">
-                        <el-time-select
-                            v-model="form.start_time"
+                    <el-form-item label="ថ្ងៃចាប់ផ្តើម">
+                        <el-date-picker
                             style="width: 100%"
-                            start="07:00"
-                            step="00:15"
-                            end="17:00"
-                            format="HH:mm:ss"
-                            placeholder="ជ្រើសរើសម៉ោង"
+                            v-model="form.start_date"
+                            type="date"
+                            placeholder="ថ្ងៃចាប់ផ្តើម"
+                            format="YYYY-MM-DD"
+                            value-format="YYYY-MM-DD"
                         />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងបញ្ចប់">
-                        <el-time-select
-                            v-model="form.end_time"
+                    <el-form-item label="ថ្ងៃខែឆ្នាំបញ្ចប់">
+                        <el-date-picker
                             style="width: 100%"
-                            start="07:00"
-                            step="00:15"
-                            end="17:00"
-                            format="HH:mm:ss"
-                            placeholder="ជ្រើសរើសម៉ោង"
+                            v-model="form.end_date"
+                            type="date"
+                            placeholder="ថ្ងៃខែឆ្នាំបញ្ចប់"
+                            format="YYYY-MM-DD"
+                            value-format="YYYY-MM-DD"
+                            :disabled-date="
+                                (date: Date) => date < new Date(form.start_date)
+                            "
+                        />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="កំណត់ចំណាំ">
+                        <el-input
+                            v-model="form.note"
+                            type="textarea"
+                            :error="form.errors.name"
                         />
                     </el-form-item>
                 </el-col>
@@ -80,16 +90,18 @@ const dialogVisible = ref(false);
 
 interface Form {
     name: string;
-    start_time: string;
-    end_time: string;
+    start_date: string;
+    end_date: string;
+    note: string;
 }
 
 const props = defineProps<{
     data: {
         id: number;
         name: string;
-        start_time: string;
-        end_time: string;
+        start_date: string;
+        end_date: string;
+        note: string;
     };
 }>();
 
@@ -98,28 +110,30 @@ watch(
     (newVal) => {
         if (newVal) {
             form.name = props.data.name;
-            form.start_time = props.data.start_time;
-            form.end_time = props.data.end_time;
+            form.start_date = props.data.start_date;
+            form.end_date = props.data.end_date;
+            form.note = props.data.note;
         }
     },
 );
 
 const form = useForm<Form>({
     name: '',
-    start_time: '',
-    end_time: '',
+    start_date: '',
+    end_date: '',
+    note: '',
 });
 
 const handleSubmit = () => {
-    form.put(`/admin/times/${props.data.id}`, {
+    form.put(`/admin/academic-years/${props.data.id}`, {
         onSuccess: () => {
             dialogVisible.value = false;
             form.reset();
-            ElMessage.success('កែប្រែម៉ោងសិក្សាជោគជ័យ');
+            ElMessage.success('កែប្រែឆ្នាំសិក្សាជោគជ័យ');
         },
         onError: () => {
             ElMessage.error(
-                'មានបញ្ហាក្នុងការកែប្រែម៉ោងសិក្សា។ សូមពិនិត្យម្តងទៀត។',
+                'មានបញ្ហាក្នុងការកែប្រែឆ្នាំសិក្សា។ សូមពិនិត្យម្តងទៀត។',
             );
         },
     });

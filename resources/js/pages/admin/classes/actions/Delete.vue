@@ -10,7 +10,7 @@
 
     <el-dialog
         v-model="dialogVisible"
-        title="តើអ្នកចង់លុបម៉ោងសិក្សានេះមែនទេ?"
+        title="តើអ្នកចង់លុបមុខវិជ្ជានេះមែនទេ?"
         width="500"
         append-to-body
     >
@@ -50,16 +50,14 @@ const props = defineProps<{
 const form = useForm({});
 
 const handleSubmit = () => {
-    form.delete(`/admin/times/${props.data.id}`, {
+    form.delete(`/admin/subjects/${props.data.id}`, {
         preserveScroll: true,
         onSuccess: () => {
             dialogVisible.value = false;
-            ElMessage.success('លុបម៉ោងសិក្សាជោគជ័យ');
+            ElMessage.success('លុបមុខវិជ្ជាជោគជ័យ');
         },
         onError: () => {
-            ElMessage.error(
-                'មានបញ្ហាក្នុងការលុបម៉ោងសិក្សា។ សូមពិនិត្យម្តងទៀត។',
-            );
+            ElMessage.error('មានបញ្ហាក្នុងការលុបមុខវិជ្ជា។ សូមពិនិត្យម្តងទៀត។');
         },
     });
 };

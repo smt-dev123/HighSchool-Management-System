@@ -12,15 +12,7 @@ class StudentStatusController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $studentStatus = StudentStatus::all();
     }
 
     /**
@@ -28,7 +20,13 @@ class StudentStatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'status_kh' => 'required|string|max:100',
+            'status_en' => 'required|string|max:100',
+            'other' => 'nullable|string|max:255',
+        ]);
+
+        StudentStatus::create($data);
     }
 
     /**
@@ -36,15 +34,7 @@ class StudentStatusController extends Controller
      */
     public function show(StudentStatus $studentStatus)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StudentStatus $studentStatus)
-    {
-        //
+        $studentStatus = StudentStatus::findOrFail($studentStatus->id);
     }
 
     /**
@@ -52,7 +42,13 @@ class StudentStatusController extends Controller
      */
     public function update(Request $request, StudentStatus $studentStatus)
     {
-        //
+        $data = $request->validate([
+            'status_kh' => 'required|string|max:100',
+            'status_en' => 'required|string|max:100',
+            'other' => 'nullable|string|max:255',
+        ]);
+
+        $studentStatus->update($data);
     }
 
     /**
@@ -60,6 +56,6 @@ class StudentStatusController extends Controller
      */
     public function destroy(StudentStatus $studentStatus)
     {
-        //
+        $studentStatus->delete();
     }
 }

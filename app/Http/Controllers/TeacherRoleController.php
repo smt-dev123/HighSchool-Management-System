@@ -12,15 +12,7 @@ class TeacherRoleController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $teacherRole = TeacherRole::all();
     }
 
     /**
@@ -28,7 +20,12 @@ class TeacherRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        TeacherRole::create($data);
     }
 
     /**
@@ -36,15 +33,7 @@ class TeacherRoleController extends Controller
      */
     public function show(TeacherRole $teacherRole)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TeacherRole $teacherRole)
-    {
-        //
+        $teacherRole = TeacherRole::findOrFail($teacherRole->id);
     }
 
     /**
@@ -52,7 +41,12 @@ class TeacherRoleController extends Controller
      */
     public function update(Request $request, TeacherRole $teacherRole)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $teacherRole->update($data);
     }
 
     /**
@@ -60,6 +54,6 @@ class TeacherRoleController extends Controller
      */
     public function destroy(TeacherRole $teacherRole)
     {
-        //
+        $teacherRole->delete();
     }
 }

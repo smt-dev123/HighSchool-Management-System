@@ -12,15 +12,7 @@ class TeacherStatusController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $teacherStatus = TeacherStatus::orderBy("created_at", "desc")->paginate(10);
     }
 
     /**
@@ -28,7 +20,13 @@ class TeacherStatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'status_kh' => 'required|string|max:255',
+            'status_en' => 'required|string|max:255',
+            'other' => 'nullable|string',
+        ]);
+
+        TeacherStatus::create($data);
     }
 
     /**
@@ -36,15 +34,7 @@ class TeacherStatusController extends Controller
      */
     public function show(TeacherStatus $teacherStatus)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TeacherStatus $teacherStatus)
-    {
-        //
+        $teacherStatus = TeacherStatus::findOrFail($teacherStatus->id);
     }
 
     /**
@@ -52,7 +42,13 @@ class TeacherStatusController extends Controller
      */
     public function update(Request $request, TeacherStatus $teacherStatus)
     {
-        //
+        $data = $request->validate([
+            'status_kh' => 'required|string|max:255',
+            'status_en' => 'required|string|max:255',
+            'other' => 'nullable|string',
+        ]);
+
+        $teacherStatus->update($data);
     }
 
     /**
@@ -60,6 +56,6 @@ class TeacherStatusController extends Controller
      */
     public function destroy(TeacherStatus $teacherStatus)
     {
-        //
+        $teacherStatus->delete();
     }
 }

@@ -12,15 +12,7 @@ class WeekDayController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $week = WeekDay::all();
     }
 
     /**
@@ -28,7 +20,12 @@ class WeekDayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+        ]);
+
+        WeekDay::create($data);
     }
 
     /**
@@ -36,15 +33,7 @@ class WeekDayController extends Controller
      */
     public function show(WeekDay $weekDay)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(WeekDay $weekDay)
-    {
-        //
+        $weekDay = WeekDay::findOrFail($weekDay->id);
     }
 
     /**
@@ -52,7 +41,12 @@ class WeekDayController extends Controller
      */
     public function update(Request $request, WeekDay $weekDay)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+        ]);
+
+        $weekDay->update($data);
     }
 
     /**
@@ -60,6 +54,6 @@ class WeekDayController extends Controller
      */
     public function destroy(WeekDay $weekDay)
     {
-        //
+        $weekDay->delete();
     }
 }

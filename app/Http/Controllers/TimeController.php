@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Time;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TimeController extends Controller
 {
@@ -12,15 +13,9 @@ class TimeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render('admin/times/Index', [
+            'times' => Time::orderBy('id', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -28,7 +23,13 @@ class TimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:50',
+            'start_time' => 'required|date_format:H:i:s',
+            'end_time' => 'required|date_format:H:i:s|after:start_time',
+        ]);
+
+        Time::create($data);
     }
 
     /**
@@ -36,15 +37,7 @@ class TimeController extends Controller
      */
     public function show(Time $time)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Time $time)
-    {
-        //
+        $time = Time::findOrFail($time->id);
     }
 
     /**
@@ -52,7 +45,13 @@ class TimeController extends Controller
      */
     public function update(Request $request, Time $time)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:50',
+            'start_time' => 'required|date_format:H:i:s',
+            'end_time' => 'required|date_format:H:i:s|after:start_time',
+        ]);
+
+        $time->update($data);
     }
 
     /**
@@ -60,6 +59,6 @@ class TimeController extends Controller
      */
     public function destroy(Time $time)
     {
-        //
+        $time->delete();
     }
 }

@@ -10,7 +10,7 @@
 
     <el-dialog
         v-model="dialogVisible"
-        title="តើអ្នកចង់លុបម៉ោងសិក្សានេះមែនទេ?"
+        title="តើអ្នកចង់លុបឆ្នាំសិក្សានេះមែនទេ?"
         width="500"
         append-to-body
     >
@@ -50,15 +50,15 @@ const props = defineProps<{
 const form = useForm({});
 
 const handleSubmit = () => {
-    form.delete(`/admin/times/${props.data.id}`, {
+    form.delete(`/admin/academic-years/${props.data.id}`, {
         preserveScroll: true,
         onSuccess: () => {
             dialogVisible.value = false;
-            ElMessage.success('លុបម៉ោងសិក្សាជោគជ័យ');
+            ElMessage.success('លុបឆ្នាំសិក្សាជោគជ័យ');
         },
         onError: () => {
             ElMessage.error(
-                'មានបញ្ហាក្នុងការលុបម៉ោងសិក្សា។ សូមពិនិត្យម្តងទៀត។',
+                'មានបញ្ហាក្នុងការលុបឆ្នាំសិក្សា។ សូមពិនិត្យម្តងទៀត។',
             );
         },
     });

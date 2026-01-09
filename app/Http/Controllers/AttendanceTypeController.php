@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AttendanceType;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AttendanceTypeController extends Controller
 {
@@ -12,15 +13,9 @@ class AttendanceTypeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render('admin/attendanceTypes/Index', [
+            'attendanceTypes' => AttendanceType::orderBy('id', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -28,7 +23,12 @@ class AttendanceTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:50',
+            'note' => 'nullable|string',
+        ]);
+
+        AttendanceType::create($data);
     }
 
     /**
@@ -36,15 +36,7 @@ class AttendanceTypeController extends Controller
      */
     public function show(AttendanceType $attendanceType)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AttendanceType $attendanceType)
-    {
-        //
+        $attendanceType = AttendanceType::findOrFail($attendanceType->id);
     }
 
     /**
@@ -52,7 +44,12 @@ class AttendanceTypeController extends Controller
      */
     public function update(Request $request, AttendanceType $attendanceType)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:50',
+            'note' => 'nullable|string',
+        ]);
+
+        $attendanceType->update($data);
     }
 
     /**
@@ -60,6 +57,6 @@ class AttendanceTypeController extends Controller
      */
     public function destroy(AttendanceType $attendanceType)
     {
-        //
+        $attendanceType->delete();
     }
 }

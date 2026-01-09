@@ -10,7 +10,7 @@
 
     <el-dialog
         v-model="dialogVisible"
-        title="កែប្រែម៉ោងសិក្សា"
+        title="កែប្រែមុខវិជ្ជា"
         width="800"
         align-center
         append-to-body
@@ -19,36 +19,27 @@
             <el-row :gutter="20">
                 <!-- Field -->
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងសិក្សា">
+                    <el-form-item label="មុខវិជ្ជាជាភាសាខ្មែរ">
                         <el-input
-                            v-model="form.name"
-                            :error="form.errors.name"
+                            v-model="form.name_kh"
+                            :error="form.errors.name_kh"
                         />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងចាប់ផ្តើម">
-                        <el-time-select
-                            v-model="form.start_time"
-                            style="width: 100%"
-                            start="07:00"
-                            step="00:15"
-                            end="17:00"
-                            format="HH:mm:ss"
-                            placeholder="ជ្រើសរើសម៉ោង"
+                    <el-form-item label="មុខវិជ្ជាជាភាសាអង់គ្លេស">
+                        <el-input
+                            v-model="form.name_en"
+                            :error="form.errors.name_en"
                         />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងបញ្ចប់">
-                        <el-time-select
-                            v-model="form.end_time"
-                            style="width: 100%"
-                            start="07:00"
-                            step="00:15"
-                            end="17:00"
-                            format="HH:mm:ss"
-                            placeholder="ជ្រើសរើសម៉ោង"
+                    <el-form-item label="កំណត់ចំណាំ">
+                        <el-input
+                            v-model="form.note"
+                            type="textarea"
+                            :error="form.errors.note"
                         />
                     </el-form-item>
                 </el-col>
@@ -79,17 +70,17 @@ import { ref, watch } from 'vue';
 const dialogVisible = ref(false);
 
 interface Form {
-    name: string;
-    start_time: string;
-    end_time: string;
+    name_kh: string;
+    name_en: string;
+    note: string;
 }
 
 const props = defineProps<{
     data: {
         id: number;
-        name: string;
-        start_time: string;
-        end_time: string;
+        name_kh: string;
+        name_en: string;
+        note: string;
     };
 }>();
 
@@ -97,29 +88,29 @@ watch(
     () => dialogVisible.value,
     (newVal) => {
         if (newVal) {
-            form.name = props.data.name;
-            form.start_time = props.data.start_time;
-            form.end_time = props.data.end_time;
+            form.name_kh = props.data.name_kh;
+            form.name_en = props.data.name_en;
+            form.note = props.data.note;
         }
     },
 );
 
 const form = useForm<Form>({
-    name: '',
-    start_time: '',
-    end_time: '',
+    name_kh: '',
+    name_en: '',
+    note: '',
 });
 
 const handleSubmit = () => {
-    form.put(`/admin/times/${props.data.id}`, {
+    form.put(`/admin/subjects/${props.data.id}`, {
         onSuccess: () => {
             dialogVisible.value = false;
             form.reset();
-            ElMessage.success('កែប្រែម៉ោងសិក្សាជោគជ័យ');
+            ElMessage.success('កែប្រែមុខវិជ្ជាជោគជ័យ');
         },
         onError: () => {
             ElMessage.error(
-                'មានបញ្ហាក្នុងការកែប្រែម៉ោងសិក្សា។ សូមពិនិត្យម្តងទៀត។',
+                'មានបញ្ហាក្នុងការកែប្រែមុខវិជ្ជា។ សូមពិនិត្យម្តងទៀត។',
             );
         },
     });

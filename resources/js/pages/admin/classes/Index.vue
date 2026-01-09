@@ -7,7 +7,7 @@ import Delete from './actions/Delete.vue';
 import Update from './actions/Update.vue';
 
 const props = defineProps<{
-    times: any[];
+    subjects: any[];
 }>();
 
 const search = ref('');
@@ -21,10 +21,12 @@ watch([search, pageSize], () => {
 
 /* Search */
 const filteredData = computed(() => {
-    if (!search.value) return props.times;
+    if (!search.value) return props.subjects;
 
-    return props.times.filter((item) =>
-        item.name.toLowerCase().includes(search.value.toLowerCase()),
+    return props.subjects.filter(
+        (item) =>
+            item.name_kh.toLowerCase().includes(search.value.toLowerCase()) ||
+            item.name_en.toLowerCase().includes(search.value.toLowerCase()),
     );
 });
 
@@ -36,7 +38,7 @@ const paginatedData = computed(() => {
 </script>
 
 <template>
-    <Head title="ម៉ោងសិក្សា" />
+    <Head title="មុខវិជ្ជា" />
 
     <AppLayout>
         <div
@@ -48,7 +50,7 @@ const paginatedData = computed(() => {
                     <el-page-header>
                         <template #content>
                             <span class="text-large font-600 mr-3"
-                                >ម៉ោងសិក្សា</span
+                                >មុខវិជ្ជា</span
                             >
                         </template>
                         <template #extra>
@@ -68,20 +70,19 @@ const paginatedData = computed(() => {
                             sortable
                         />
                         <el-table-column
-                            prop="name"
-                            label="ម៉ោងសិក្សា"
+                            prop="name_kh"
+                            label="មុខវិជ្ជាជាភាសាខ្មែរ"
+                            width="180"
                             sortable
                         />
                         <el-table-column
-                            prop="start_time"
-                            label="ម៉ោងចាប់ផ្តើម"
+                            prop="name_en"
+                            label="មុខវិជ្ជាជាភាសាអង់គ្លេស"
                             width="180"
+                            sortable
                         />
-                        <el-table-column
-                            prop="end_time"
-                            label="ម៉ោងបញ្ចប់"
-                            width="180"
-                        />
+
+                        <el-table-column prop="note" label="កំណត់ចំណាំ" />
                         <!-- Actions -->
                         <el-table-column width="180" fixed="right">
                             <template #header>
@@ -89,7 +90,7 @@ const paginatedData = computed(() => {
                                 <div class="flex items-center gap-2">
                                     <el-input
                                         v-model="search"
-                                        placeholder="ស្វែងរកឆ្នាំសិក្សា..."
+                                        placeholder="ស្វែងរកឈ្មោះ..."
                                         clearable
                                         style="width: 250px"
                                     />

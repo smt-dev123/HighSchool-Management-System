@@ -1,11 +1,11 @@
 <template>
     <el-button @click="dialogVisible = true" type="primary">
-        បន្ថែមម៉ោងសិក្សា
+        បន្ថែមមុខវិជ្ជា
     </el-button>
 
     <el-dialog
         v-model="dialogVisible"
-        title="បន្ថែមម៉ោងសិក្សា"
+        title="បន្ថែមមុខវិជ្ជា"
         width="800"
         align-center
         append-to-body
@@ -14,36 +14,27 @@
             <el-row :gutter="20">
                 <!-- Field -->
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងសិក្សា">
+                    <el-form-item label="មុខវិជ្ជាជាភាសាខ្មែរ">
                         <el-input
-                            v-model="form.name"
-                            :error="form.errors.name"
+                            v-model="form.name_kh"
+                            :error="form.errors.name_kh"
                         />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងចាប់ផ្តើម">
-                        <el-time-select
-                            v-model="form.start_time"
-                            style="width: 100%"
-                            start="07:00"
-                            step="00:15"
-                            end="17:00"
-                            format="HH:mm:ss"
-                            placeholder="ជ្រើសរើសម៉ោង"
+                    <el-form-item label="មុខវិជ្ជាជាភាសាអង់គ្លេស">
+                        <el-input
+                            v-model="form.name_en"
+                            :error="form.errors.name_en"
                         />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="ម៉ោងបញ្ចប់">
-                        <el-time-select
-                            v-model="form.end_time"
-                            style="width: 100%"
-                            start="07:00"
-                            step="00:15"
-                            end="17:00"
-                            format="HH:mm:ss"
-                            placeholder="ជ្រើសរើសម៉ោង"
+                    <el-form-item label="កំណត់ចំណាំ">
+                        <el-input
+                            v-model="form.note"
+                            type="textarea"
+                            :error="form.errors.note"
                         />
                     </el-form-item>
                 </el-col>
@@ -73,27 +64,27 @@ import { ref } from 'vue';
 const dialogVisible = ref(false);
 
 interface Form {
-    name: string;
-    start_time: string;
-    end_time: string;
+    name_kh: string;
+    name_en: string;
+    note: string;
 }
 
 const form = useForm<Form>({
-    name: '',
-    start_time: '',
-    end_time: '',
+    name_kh: '',
+    name_en: '',
+    note: '',
 });
 
 const handleSubmit = () => {
-    form.post('/admin/times', {
+    form.post('/admin/subjects', {
         onSuccess: () => {
             dialogVisible.value = false;
             form.reset();
-            ElMessage.success('បង្កើតម៉ោងសិក្សាជោគជ័យ');
+            ElMessage.success('បង្កើតមុខវិជ្ជាជោគជ័យ');
         },
         onError: () => {
             ElMessage.error(
-                'មានបញ្ហាក្នុងការបង្កើតម៉ោងសិក្សា។ សូមពិនិត្យម្តងទៀត។',
+                'មានបញ្ហាក្នុងការបង្កើតមុខវិជ្ជា។ សូមពិនិត្យម្តងទៀត។',
             );
         },
     });

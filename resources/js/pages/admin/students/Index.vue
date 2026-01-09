@@ -7,7 +7,7 @@ import Delete from './actions/Delete.vue';
 import Update from './actions/Update.vue';
 
 const props = defineProps<{
-    times: any[];
+    students: any[];
 }>();
 
 const search = ref('');
@@ -21,9 +21,9 @@ watch([search, pageSize], () => {
 
 /* Search */
 const filteredData = computed(() => {
-    if (!search.value) return props.times;
+    if (!search.value) return props.students;
 
-    return props.times.filter((item) =>
+    return props.students.filter((item) =>
         item.name.toLowerCase().includes(search.value.toLowerCase()),
     );
 });
@@ -36,7 +36,7 @@ const paginatedData = computed(() => {
 </script>
 
 <template>
-    <Head title="ម៉ោងសិក្សា" />
+    <Head title="សិស្សានុសិស្ស" />
 
     <AppLayout>
         <div
@@ -48,7 +48,7 @@ const paginatedData = computed(() => {
                     <el-page-header>
                         <template #content>
                             <span class="text-large font-600 mr-3"
-                                >ម៉ោងសិក្សា</span
+                                >សិស្សានុសិស្ស</span
                             >
                         </template>
                         <template #extra>
@@ -69,19 +69,21 @@ const paginatedData = computed(() => {
                         />
                         <el-table-column
                             prop="name"
-                            label="ម៉ោងសិក្សា"
+                            label="ឆ្នាំសិក្សា"
+                            width="180"
                             sortable
                         />
                         <el-table-column
-                            prop="start_time"
-                            label="ម៉ោងចាប់ផ្តើម"
+                            prop="start_date"
+                            label="ថ្ងៃចាប់ផ្តើម"
                             width="180"
                         />
                         <el-table-column
-                            prop="end_time"
-                            label="ម៉ោងបញ្ចប់"
+                            prop="end_date"
+                            label="ថ្ងៃខែឆ្នាំបញ្ចប់"
                             width="180"
                         />
+                        <el-table-column prop="note" label="កំណត់ចំណាំ" />
                         <!-- Actions -->
                         <el-table-column width="180" fixed="right">
                             <template #header>

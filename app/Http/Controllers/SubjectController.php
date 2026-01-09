@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SubjectController extends Controller
 {
@@ -12,7 +13,9 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('admin/subjects/Index', [
+            'subjects' => Subject::orderBy('id', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -28,7 +31,13 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        Subject::create($data);
     }
 
     /**
@@ -36,7 +45,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        $subject = Subject::findOrFail($subject->id);
     }
 
     /**
@@ -52,7 +61,13 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $subject->update($data);
     }
 
     /**
@@ -60,6 +75,6 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+        $subject->delete();
     }
 }
