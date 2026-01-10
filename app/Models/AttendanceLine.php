@@ -15,4 +15,20 @@ class AttendanceLine extends Model
         "student_id",
         "attendance_type_id",
     ];
+
+    // Relationships
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function attendanceType()
+    {
+        return $this->belongsTo(AttendanceType::class);
+    }
 }

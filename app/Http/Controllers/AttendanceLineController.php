@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AttendanceLine;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AttendanceLineController extends Controller
 {
@@ -12,15 +13,7 @@ class AttendanceLineController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        AttendanceLine::with(['attendance', 'student', 'attendanceType'])->get();
     }
 
     /**
@@ -28,7 +21,13 @@ class AttendanceLineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'attendance_id' => 'required|exists:attendances,id',
+            'student_id' => 'required|exists:students,id',
+            'attendance_type_id' => 'required|exists:attendance_types,id',
+        ]);
+
+        AttendanceLine::create($data);
     }
 
     /**
@@ -36,15 +35,7 @@ class AttendanceLineController extends Controller
      */
     public function show(AttendanceLine $attendanceLine)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AttendanceLine $attendanceLine)
-    {
-        //
+        $attendanceLine->load(['attendance', 'student', 'attendanceType']);
     }
 
     /**
@@ -52,7 +43,13 @@ class AttendanceLineController extends Controller
      */
     public function update(Request $request, AttendanceLine $attendanceLine)
     {
-        //
+        $data = $request->validate([
+            'attendance_id' => 'required|exists:attendances,id',
+            'student_id' => 'required|exists:students,id',
+            'attendance_type_id' => 'required|exists:attendance_types,id',
+        ]);
+
+        $attendanceLine->update($data);
     }
 
     /**
@@ -60,6 +57,6 @@ class AttendanceLineController extends Controller
      */
     public function destroy(AttendanceLine $attendanceLine)
     {
-        //
+        $attendanceLine->delete();
     }
 }

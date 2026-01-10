@@ -17,6 +17,11 @@ class ClassType extends Model
 
     public function classes()
     {
-        return $this->hasMany(Classes::class);
+        return $this->hasMany(Classes::class, 'class_type_id');
+    }
+
+    public function subjectGradeLevels()
+    {
+        return $this->hasMany(SubjectGradeLevel::class, 'class_type_id');
     }
 }

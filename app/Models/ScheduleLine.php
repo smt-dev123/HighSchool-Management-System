@@ -16,4 +16,25 @@ class ScheduleLine extends Model
         "day_id",
         "subject_grade_id",
     ];
+
+    // Relationships
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
+
+    public function time()
+    {
+        return $this->belongsTo(Time::class);
+    }
+
+    public function day()
+    {
+        return $this->belongsTo(WeekDay::class);
+    }
+
+    public function subjectGrade()
+    {
+        return $this->belongsTo(SubjectGradeLevel::class);
+    }
 }

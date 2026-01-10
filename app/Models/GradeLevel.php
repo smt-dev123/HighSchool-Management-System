@@ -14,8 +14,13 @@ class GradeLevel extends Model
         "note",
     ];
 
-    public function levels()
+    public function classes()
     {
-        return $this->hasMany(Classes::class);
+        return $this->hasMany(Classes::class, 'grade_level_id');
+    }
+
+    public function subjectGradeLevels()
+    {
+        return $this->hasMany(SubjectGradeLevel::class, 'grade_level_id');
     }
 }

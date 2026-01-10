@@ -16,4 +16,20 @@ class ScoreLine extends Model
         "subject_grade_id",
         "mark",
     ];
+
+    // Relationships
+    public function score()
+    {
+        return $this->belongsTo(Score::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function subjectGrade()
+    {
+        return $this->belongsTo(SubjectGradeLevel::class);
+    }
 }

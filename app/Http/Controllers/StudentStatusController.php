@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentStatus;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class StudentStatusController extends Controller
 {
@@ -12,7 +13,12 @@ class StudentStatusController extends Controller
      */
     public function index()
     {
-        $studentStatus = StudentStatus::all();
+        $studentStatuses = StudentStatus::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $studentStatuses,
+        ]);
     }
 
     /**
@@ -23,7 +29,8 @@ class StudentStatusController extends Controller
         $data = $request->validate([
             'status_kh' => 'required|string|max:100',
             'status_en' => 'required|string|max:100',
-            'other' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
+            'description' => 'nullable|string',
         ]);
 
         StudentStatus::create($data);
@@ -34,7 +41,7 @@ class StudentStatusController extends Controller
      */
     public function show(StudentStatus $studentStatus)
     {
-        $studentStatus = StudentStatus::findOrFail($studentStatus->id);
+        StudentStatus::find($studentStatus->id);
     }
 
     /**
@@ -45,7 +52,8 @@ class StudentStatusController extends Controller
         $data = $request->validate([
             'status_kh' => 'required|string|max:100',
             'status_en' => 'required|string|max:100',
-            'other' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
+            'description' => 'nullable|string',
         ]);
 
         $studentStatus->update($data);

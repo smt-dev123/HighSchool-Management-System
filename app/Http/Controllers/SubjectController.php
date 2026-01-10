@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 
 class SubjectController extends Controller
@@ -16,14 +17,6 @@ class SubjectController extends Controller
         return Inertia::render('admin/subjects/Index', [
             'subjects' => Subject::orderBy('id', 'desc')->get(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -45,15 +38,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        $subject = Subject::findOrFail($subject->id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Subject $subject)
-    {
-        //
+        Subject::find($subject->id);
     }
 
     /**

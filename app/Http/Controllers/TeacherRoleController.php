@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TeacherRole;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TeacherRoleController extends Controller
 {
@@ -12,7 +13,7 @@ class TeacherRoleController extends Controller
      */
     public function index()
     {
-        $teacherRole = TeacherRole::all();
+        TeacherRole::all();
     }
 
     /**
@@ -33,7 +34,7 @@ class TeacherRoleController extends Controller
      */
     public function show(TeacherRole $teacherRole)
     {
-        $teacherRole = TeacherRole::findOrFail($teacherRole->id);
+        TeacherRole::find($teacherRole->id);
     }
 
     /**

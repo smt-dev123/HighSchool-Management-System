@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class StudentClassController extends Controller
 {
@@ -12,15 +13,7 @@ class StudentClassController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $studentClasses = StudentClass::with(['student', 'class'])->get();
     }
 
     /**
@@ -28,7 +21,14 @@ class StudentClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'class_id' => 'required|exists:classes,id',
+            'is_duplicated' => 'boolean',
+            'other' => 'nullable|string',
+        ]);
+
+        StudentClass::create($data);
     }
 
     /**
@@ -36,15 +36,7 @@ class StudentClassController extends Controller
      */
     public function show(StudentClass $studentClass)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StudentClass $studentClass)
-    {
-        //
+        $studentClass->load(['student', 'class']);
     }
 
     /**
@@ -52,7 +44,14 @@ class StudentClassController extends Controller
      */
     public function update(Request $request, StudentClass $studentClass)
     {
-        //
+        $data = $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'class_id' => 'required|exists:classes,id',
+            'is_duplicated' => 'boolean',
+            'other' => 'nullable|string',
+        ]);
+
+        $studentClass->update($data);
     }
 
     /**
@@ -60,6 +59,6 @@ class StudentClassController extends Controller
      */
     public function destroy(StudentClass $studentClass)
     {
-        //
+        $studentClass->delete();
     }
 }

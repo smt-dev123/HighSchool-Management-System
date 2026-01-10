@@ -14,4 +14,9 @@ class AttendanceType extends Model
         "name",
         "note",
     ];
+
+    public function attendanceLines()
+    {
+        return $this->hasMany(AttendanceLine::class, 'attendance_type_id');
+    }
 }

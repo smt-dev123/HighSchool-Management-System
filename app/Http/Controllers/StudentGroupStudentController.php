@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentGroupStudent;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class StudentGroupStudentController extends Controller
 {
@@ -12,15 +13,7 @@ class StudentGroupStudentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        StudentGroupStudent::with(['studentGroup', 'student'])->get();
     }
 
     /**
@@ -28,7 +21,12 @@ class StudentGroupStudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'student_group_id' => 'required|exists:student_groups,id',
+            'student_id' => 'required|exists:students,id',
+        ]);
+
+        StudentGroupStudent::create($data);
     }
 
     /**
@@ -36,15 +34,7 @@ class StudentGroupStudentController extends Controller
      */
     public function show(StudentGroupStudent $studentGroupStudent)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StudentGroupStudent $studentGroupStudent)
-    {
-        //
+        $studentGroupStudent->load(['studentGroup', 'student']);
     }
 
     /**
@@ -52,7 +42,12 @@ class StudentGroupStudentController extends Controller
      */
     public function update(Request $request, StudentGroupStudent $studentGroupStudent)
     {
-        //
+        $data = $request->validate([
+            'student_group_id' => 'required|exists:student_groups,id',
+            'student_id' => 'required|exists:students,id',
+        ]);
+
+        $studentGroupStudent->update($data);
     }
 
     /**
@@ -60,6 +55,6 @@ class StudentGroupStudentController extends Controller
      */
     public function destroy(StudentGroupStudent $studentGroupStudent)
     {
-        //
+        $studentGroupStudent->delete();
     }
 }

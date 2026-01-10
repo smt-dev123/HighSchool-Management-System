@@ -15,4 +15,14 @@ class Time extends Model
         "start_time",
         "end_time",
     ];
+
+    public function scheduleLines()
+    {
+        return $this->hasMany(ScheduleLine::class, 'time_id');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'time_id');
+    }
 }

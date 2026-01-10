@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassType;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ClassTypeController extends Controller
 {
@@ -12,15 +13,7 @@ class ClassTypeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        ClassType::all();
     }
 
     /**
@@ -28,7 +21,12 @@ class ClassTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        ClassType::create($data);
     }
 
     /**
@@ -36,15 +34,7 @@ class ClassTypeController extends Controller
      */
     public function show(ClassType $classType)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ClassType $classType)
-    {
-        //
+        ClassType::find($classType->id);
     }
 
     /**
@@ -52,7 +42,12 @@ class ClassTypeController extends Controller
      */
     public function update(Request $request, ClassType $classType)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $classType->update($data);
     }
 
     /**
@@ -60,6 +55,6 @@ class ClassTypeController extends Controller
      */
     public function destroy(ClassType $classType)
     {
-        //
+        $classType->delete();
     }
 }

@@ -19,7 +19,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('admin/subjects', SubjectController::class)
         ->names('admin.subject');
 
-
     Route::resource('admin/students', StudentController::class)
         ->names('admin.student');
 })->middleware(['auth', 'verified']);

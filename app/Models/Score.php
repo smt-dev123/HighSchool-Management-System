@@ -14,4 +14,20 @@ class Score extends Model
         "class_id",
         "score_type_id",
     ];
+
+    // Relationships
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+
+    public function scoreType()
+    {
+        return $this->belongsTo(ScoreType::class);
+    }
+
+    public function lines()
+    {
+        return $this->hasMany(ScoreLine::class);
+    }
 }

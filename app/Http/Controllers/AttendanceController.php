@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AttendanceController extends Controller
 {
@@ -12,15 +13,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        Attendance::with(['class', 'time', 'day', 'subjectGrade', 'teacher'])->get();
     }
 
     /**
@@ -28,7 +21,15 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'class_id' => 'required|exists:classes,id',
+            'time_id' => 'required|exists:times,id',
+            'day_id' => 'required|exists:week_days,id',
+            'subject_grade_id' => 'required|exists:subject_grade_levels,id',
+            'teacher_id' => 'required|exists:teachers,id',
+        ]);
+
+        Attendance::create($data);
     }
 
     /**
@@ -36,15 +37,7 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attendance $attendance)
-    {
-        //
+        $attendance->load(['class', 'time', 'day', 'subjectGrade', 'teacher', 'lines']);
     }
 
     /**
@@ -52,7 +45,15 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, Attendance $attendance)
     {
-        //
+        $data = $request->validate([
+            'class_id' => 'required|exists:classes,id',
+            'time_id' => 'required|exists:times,id',
+            'day_id' => 'required|exists:week_days,id',
+            'subject_grade_id' => 'required|exists:subject_grade_levels,id',
+            'teacher_id' => 'required|exists:teachers,id',
+        ]);
+
+        $attendance->update($data);
     }
 
     /**
@@ -60,6 +61,6 @@ class AttendanceController extends Controller
      */
     public function destroy(Attendance $attendance)
     {
-        //
+        $attendance->delete();
     }
 }

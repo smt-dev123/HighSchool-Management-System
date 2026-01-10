@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentRole;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class StudentRoleController extends Controller
 {
@@ -12,15 +13,7 @@ class StudentRoleController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        StudentRole::all();
     }
 
     /**
@@ -28,7 +21,12 @@ class StudentRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $studentRole = StudentRole::create($data);
     }
 
     /**
@@ -36,15 +34,7 @@ class StudentRoleController extends Controller
      */
     public function show(StudentRole $studentRole)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StudentRole $studentRole)
-    {
-        //
+        StudentRole::find($studentRole->id);
     }
 
     /**
@@ -52,7 +42,12 @@ class StudentRoleController extends Controller
      */
     public function update(Request $request, StudentRole $studentRole)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $studentRole->update($data);
     }
 
     /**
@@ -60,6 +55,6 @@ class StudentRoleController extends Controller
      */
     public function destroy(StudentRole $studentRole)
     {
-        //
+        $studentRole->delete();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TeacherStatus;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TeacherStatusController extends Controller
 {
@@ -12,7 +13,7 @@ class TeacherStatusController extends Controller
      */
     public function index()
     {
-        $teacherStatus = TeacherStatus::orderBy("created_at", "desc")->paginate(10);
+        TeacherStatus::orderBy("created_at", "desc")->get();
     }
 
     /**
@@ -34,7 +35,7 @@ class TeacherStatusController extends Controller
      */
     public function show(TeacherStatus $teacherStatus)
     {
-        $teacherStatus = TeacherStatus::findOrFail($teacherStatus->id);
+        TeacherStatus::find($teacherStatus->id);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ScoreType;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ScoreTypeController extends Controller
 {
@@ -12,7 +13,7 @@ class ScoreTypeController extends Controller
      */
     public function index()
     {
-        $scoreTypes = ScoreType::all();
+        ScoreType::all();
     }
 
     /**
@@ -33,7 +34,7 @@ class ScoreTypeController extends Controller
      */
     public function show(ScoreType $scoreType)
     {
-        $scoreType = ScoreType::findOrFail($scoreType->id);
+        ScoreType::find($scoreType->id);
     }
 
     /**

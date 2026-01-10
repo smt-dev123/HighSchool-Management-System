@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Time;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 
 class TimeController extends Controller
@@ -37,7 +38,7 @@ class TimeController extends Controller
      */
     public function show(Time $time)
     {
-        $time = Time::findOrFail($time->id);
+        Time::find($time->id);
     }
 
     /**

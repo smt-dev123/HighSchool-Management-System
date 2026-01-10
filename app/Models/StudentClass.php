@@ -12,8 +12,23 @@ class StudentClass extends Model
 
     protected $fillable = [
         "student_id",
-        "from_class_id",
-        "is_duplicate",
+        "class_id",
+        "is_duplicated",
         "other",
     ];
+
+    protected $casts = [
+        'is_duplicated' => 'boolean',
+    ];
+
+    // Relationships
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
 }

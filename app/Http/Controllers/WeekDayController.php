@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WeekDay;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class WeekDayController extends Controller
 {
@@ -12,7 +13,7 @@ class WeekDayController extends Controller
      */
     public function index()
     {
-        $week = WeekDay::all();
+        WeekDay::all();
     }
 
     /**
@@ -33,7 +34,7 @@ class WeekDayController extends Controller
      */
     public function show(WeekDay $weekDay)
     {
-        $weekDay = WeekDay::findOrFail($weekDay->id);
+        WeekDay::find($weekDay->id);
     }
 
     /**

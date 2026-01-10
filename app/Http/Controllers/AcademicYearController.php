@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 
 class AcademicYearController extends Controller
@@ -38,7 +39,7 @@ class AcademicYearController extends Controller
      */
     public function show(AcademicYear $academicYear)
     {
-        $academicYear = AcademicYear::findOrFail($academicYear->id);
+        AcademicYear::find($academicYear->id);
     }
 
     /**

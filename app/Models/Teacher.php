@@ -25,4 +25,36 @@ class Teacher extends Model
         "status_id",
         "other",
     ];
+
+    protected $casts = [
+        'dob' => 'date',
+        'join_date' => 'date',
+        'is_enable_account' => 'boolean',
+    ];
+
+    // Relationships
+    public function status()
+    {
+        return $this->belongsTo(TeacherStatus::class);
+    }
+
+    public function classes()
+    {
+        return $this->belongsToMany(
+            Classes::class,
+            'teacher_classes',
+            'teacher_id',
+            'class_id'
+        );
+    }
+
+    public function teacherClasses()
+    {
+        return $this->hasMany(TeacherClass::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

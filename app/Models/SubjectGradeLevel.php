@@ -18,4 +18,39 @@ class SubjectGradeLevel extends Model
         "divide",
         "average",
     ];
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+
+    public function gradeLevel()
+    {
+        return $this->belongsTo(GradeLevel::class, 'grade_level_id');
+    }
+
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class, 'class_type_id');
+    }
+
+    public function scheduleLines()
+    {
+        return $this->hasMany(ScheduleLine::class, 'subject_grade_level_id');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'subject_grade_level_id');
+    }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class, 'subject_grade_level_id');
+    }
+
+    public function teacherClasses()
+    {
+        return $this->hasMany(TeacherClass::class, 'subject_grade_level_id');
+    }
 }

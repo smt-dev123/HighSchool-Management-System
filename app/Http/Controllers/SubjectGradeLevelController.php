@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubjectGradeLevel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SubjectGradeLevelController extends Controller
 {
@@ -12,15 +13,7 @@ class SubjectGradeLevelController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        SubjectGradeLevel::all();
     }
 
     /**
@@ -28,7 +21,13 @@ class SubjectGradeLevelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        SubjectGradeLevel::create($data);
     }
 
     /**
@@ -36,15 +35,7 @@ class SubjectGradeLevelController extends Controller
      */
     public function show(SubjectGradeLevel $subjectGradeLevel)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SubjectGradeLevel $subjectGradeLevel)
-    {
-        //
+        SubjectGradeLevel::find($subjectGradeLevel->id);
     }
 
     /**
@@ -52,7 +43,13 @@ class SubjectGradeLevelController extends Controller
      */
     public function update(Request $request, SubjectGradeLevel $subjectGradeLevel)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $subjectGradeLevel->update($data);
     }
 
     /**
@@ -60,6 +57,6 @@ class SubjectGradeLevelController extends Controller
      */
     public function destroy(SubjectGradeLevel $subjectGradeLevel)
     {
-        //
+        $subjectGradeLevel->delete();
     }
 }

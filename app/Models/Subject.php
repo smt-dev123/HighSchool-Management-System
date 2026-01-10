@@ -15,4 +15,9 @@ class Subject extends Model
         "name_en",
         "note",
     ];
+
+    public function gradeLevels()
+    {
+        return $this->hasMany(SubjectGradeLevel::class, 'subject_id');
+    }
 }

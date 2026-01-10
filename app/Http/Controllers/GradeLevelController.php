@@ -12,15 +12,7 @@ class GradeLevelController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $teacherRole = GradeLevel::all();
     }
 
     /**
@@ -28,7 +20,12 @@ class GradeLevelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        GradeLevel::create($data);
     }
 
     /**
@@ -40,19 +37,16 @@ class GradeLevelController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(GradeLevel $gradeLevel)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, GradeLevel $gradeLevel)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+        ]);
+
+        $gradeLevel->update($data);
     }
 
     /**
@@ -60,6 +54,6 @@ class GradeLevelController extends Controller
      */
     public function destroy(GradeLevel $gradeLevel)
     {
-        //
+        $gradeLevel->delete();
     }
 }

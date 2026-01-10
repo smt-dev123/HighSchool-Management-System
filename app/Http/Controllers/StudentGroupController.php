@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentGroup;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class StudentGroupController extends Controller
 {
@@ -12,15 +13,7 @@ class StudentGroupController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        StudentGroup::with(['classes', 'students'])->get();
     }
 
     /**
@@ -28,7 +21,13 @@ class StudentGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:student_groups,code',
+            'note' => 'nullable|string',
+        ]);
+
+        StudentGroup::create($data);
     }
 
     /**
@@ -36,15 +35,7 @@ class StudentGroupController extends Controller
      */
     public function show(StudentGroup $studentGroup)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StudentGroup $studentGroup)
-    {
-        //
+        $studentGroup->load(['classes', 'students']);
     }
 
     /**
@@ -52,7 +43,13 @@ class StudentGroupController extends Controller
      */
     public function update(Request $request, StudentGroup $studentGroup)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:student_groups,code,' . $studentGroup->id,
+            'note' => 'nullable|string',
+        ]);
+
+        $studentGroup->update($data);
     }
 
     /**
@@ -60,6 +57,6 @@ class StudentGroupController extends Controller
      */
     public function destroy(StudentGroup $studentGroup)
     {
-        //
+        $studentGroup->delete();
     }
 }

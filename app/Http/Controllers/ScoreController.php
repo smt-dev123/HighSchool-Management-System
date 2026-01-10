@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Score;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ScoreController extends Controller
 {
@@ -12,15 +13,7 @@ class ScoreController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $scores = Score::with(['class', 'scoreType', 'lines'])->get();
     }
 
     /**
@@ -28,7 +21,12 @@ class ScoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'class_id' => 'required|exists:classes,id',
+            'score_type_id' => 'required|exists:score_types,id',
+        ]);
+
+        Score::create($data);
     }
 
     /**
@@ -36,15 +34,7 @@ class ScoreController extends Controller
      */
     public function show(Score $score)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Score $score)
-    {
-        //
+        $score->load(['class', 'scoreType', 'lines']);
     }
 
     /**
@@ -52,7 +42,12 @@ class ScoreController extends Controller
      */
     public function update(Request $request, Score $score)
     {
-        //
+        $data = $request->validate([
+            'class_id' => 'required|exists:classes,id',
+            'score_type_id' => 'required|exists:score_types,id',
+        ]);
+
+        $score->update($data);
     }
 
     /**
@@ -60,6 +55,6 @@ class ScoreController extends Controller
      */
     public function destroy(Score $score)
     {
-        //
+        $score->delete();
     }
 }

@@ -14,4 +14,14 @@ class WeekDay extends Model
         "name_kh",
         "name_en",
     ];
+
+    public function scheduleLines()
+    {
+        return $this->hasMany(ScheduleLine::class, 'day_id');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'day_id');
+    }
 }

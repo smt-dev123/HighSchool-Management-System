@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ScheduleController extends Controller
 {
@@ -12,15 +13,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        Schedule::with(['class', 'lines'])->get();
     }
 
     /**
@@ -28,7 +21,11 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'class_id' => 'required|exists:classes,id',
+        ]);
+
+        Schedule::create($data);
     }
 
     /**
@@ -36,15 +33,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Schedule $schedule)
-    {
-        //
+        $schedule->load(['class', 'lines']);
     }
 
     /**
@@ -52,7 +41,11 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, Schedule $schedule)
     {
-        //
+        $data = $request->validate([
+            'class_id' => 'required|exists:classes,id',
+        ]);
+
+        $schedule->update($data);
     }
 
     /**
@@ -60,6 +53,6 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        $schedule->delete();
     }
 }

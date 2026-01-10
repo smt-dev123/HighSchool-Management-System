@@ -16,4 +16,25 @@ class TeacherClass extends Model
         "subject_grade_id",
         "role_id",
     ];
+
+    // Relationships
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+
+    public function subjectGrade()
+    {
+        return $this->belongsTo(SubjectGradeLevel::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(TeacherRole::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ScoreLine;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ScoreLineController extends Controller
 {
@@ -12,15 +13,7 @@ class ScoreLineController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        ScoreLine::with(['score', 'student', 'subjectGrade'])->get();
     }
 
     /**
@@ -28,7 +21,14 @@ class ScoreLineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'score_id' => 'required|exists:scores,id',
+            'student_id' => 'required|exists:students,id',
+            'subject_grade_id' => 'required|exists:subject_grade_levels,id',
+            'mark' => 'required|string|max:255',
+        ]);
+
+        ScoreLine::create($data);
     }
 
     /**
@@ -36,15 +36,7 @@ class ScoreLineController extends Controller
      */
     public function show(ScoreLine $scoreLine)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ScoreLine $scoreLine)
-    {
-        //
+        $scoreLine->load(['score', 'student', 'subjectGrade']);
     }
 
     /**
@@ -52,7 +44,14 @@ class ScoreLineController extends Controller
      */
     public function update(Request $request, ScoreLine $scoreLine)
     {
-        //
+        $data = $request->validate([
+            'score_id' => 'required|exists:scores,id',
+            'student_id' => 'required|exists:students,id',
+            'subject_grade_id' => 'required|exists:subject_grade_levels,id',
+            'mark' => 'required|string|max:255',
+        ]);
+
+        $scoreLine->update($data);
     }
 
     /**
@@ -60,6 +59,6 @@ class ScoreLineController extends Controller
      */
     public function destroy(ScoreLine $scoreLine)
     {
-        //
+        $scoreLine->delete();
     }
 }

@@ -15,4 +15,9 @@ class TeacherStatus extends Model
         "status_en",
         "other",
     ];
+
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class, 'status_id');
+    }
 }

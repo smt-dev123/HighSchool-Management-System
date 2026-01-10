@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TeacherController extends Controller
 {
@@ -12,15 +13,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        Teacher::with(['status', 'classes'])->get();
     }
 
     /**
@@ -28,7 +21,23 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'gender' => 'required|string|in:Male,Female',
+            'dob' => 'required|date',
+            'join_date' => 'required|date',
+            'level' => 'nullable|string',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'email' => 'nullable|email|unique:teachers,email',
+            'profile' => 'nullable|string',
+            'is_enable_account' => 'boolean',
+            'status_id' => 'required|exists:teacher_statuses,id',
+            'other' => 'nullable|string',
+        ]);
+
+        Teacher::create($data);
     }
 
     /**
@@ -36,15 +45,7 @@ class TeacherController extends Controller
      */
     public function show(Teacher $teacher)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Teacher $teacher)
-    {
-        //
+        $teacher->load(['status', 'classes']);
     }
 
     /**
@@ -52,7 +53,23 @@ class TeacherController extends Controller
      */
     public function update(Request $request, Teacher $teacher)
     {
-        //
+        $data = $request->validate([
+            'name_kh' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'gender' => 'required|string|in:Male,Female',
+            'dob' => 'required|date',
+            'join_date' => 'required|date',
+            'level' => 'nullable|string',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'email' => 'nullable|email|unique:teachers,email,' . $teacher->id,
+            'profile' => 'nullable|string',
+            'is_enable_account' => 'boolean',
+            'status_id' => 'required|exists:teacher_statuses,id',
+            'other' => 'nullable|string',
+        ]);
+
+        $teacher->update($data);
     }
 
     /**
@@ -60,6 +77,6 @@ class TeacherController extends Controller
      */
     public function destroy(Teacher $teacher)
     {
-        //
+        $teacher->delete();
     }
 }

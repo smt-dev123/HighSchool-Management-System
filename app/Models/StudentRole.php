@@ -14,4 +14,9 @@ class StudentRole extends Model
         "name",
         "note",
     ];
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'role_id');
+    }
 }

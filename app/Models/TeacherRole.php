@@ -14,4 +14,9 @@ class TeacherRole extends Model
         "name",
         "note",
     ];
+
+    public function teacherClasses()
+    {
+        return $this->hasMany(TeacherClass::class, 'role_id');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TeacherClass;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TeacherClassController extends Controller
 {
@@ -12,15 +13,7 @@ class TeacherClassController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $teacherClasses = TeacherClass::with(['teacher', 'class', 'subjectGrade', 'role'])->get();
     }
 
     /**
@@ -28,7 +21,14 @@ class TeacherClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'class_id' => 'required|exists:classes,id',
+            'subject_grade_id' => 'required|exists:subject_grade_levels,id',
+            'role_id' => 'required|exists:teacher_roles,id',
+        ]);
+
+        TeacherClass::create($data);
     }
 
     /**
@@ -36,15 +36,7 @@ class TeacherClassController extends Controller
      */
     public function show(TeacherClass $teacherClass)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TeacherClass $teacherClass)
-    {
-        //
+        $teacherClass->load(['teacher', 'class', 'subjectGrade', 'role']);
     }
 
     /**
@@ -52,7 +44,14 @@ class TeacherClassController extends Controller
      */
     public function update(Request $request, TeacherClass $teacherClass)
     {
-        //
+        $data = $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'class_id' => 'required|exists:classes,id',
+            'subject_grade_id' => 'required|exists:subject_grade_levels,id',
+            'role_id' => 'required|exists:teacher_roles,id',
+        ]);
+
+        $teacherClass->update($data);
     }
 
     /**
@@ -60,6 +59,6 @@ class TeacherClassController extends Controller
      */
     public function destroy(TeacherClass $teacherClass)
     {
-        //
+        $teacherClass->delete();
     }
 }
