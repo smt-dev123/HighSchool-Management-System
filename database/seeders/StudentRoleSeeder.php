@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class StudentRoleSeeder extends Seeder
 {
@@ -12,14 +13,16 @@ class StudentRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $sturole = [
-            ['name' => 'ក្រុមប្រឹក្សាកុមារ'],
-            ['name' => 'ប្រធានថ្នាក់'],
-            ['name' => 'សិស្សធម្មតា'],
-        ];
-
-        foreach ($sturole as $r) {
-            \App\Models\StudentStatus::create($r);
-        }
+        DB::table(table: 'student_roles')->upsert(
+            [
+                ['id' => 1, 'name' => 'ប្រធានថ្នាក់', 'note' => 'អ្នកដឹកនាំថ្នាក់សិក្សា'],
+                ['id' => 2, 'name' => 'អនុប្រធាន១', 'note' => 'អ្នកដឹកនាំថ្នាក់សិក្សា១'],
+                ['id' => 3, 'name' => 'អនុប្រធាន២', 'note' => 'អ្នកដឹកនាំថ្នាក់សិក្សា២'],
+                ['id' => 4, 'name' => 'សិស្សានុសិស្ស', 'note' => 'សិស្សានុសិស្ស'],
+                ['id' => 5, 'name' => 'ក្រុមប្រឹក្សាកុមារ', 'note' => 'អ្នកដឹកនាំក្រុមប្រឹក្សាកុមារ'],
+            ],
+            ['id'],
+            ['name', 'note']
+        );
     }
 }
