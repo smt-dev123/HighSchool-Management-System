@@ -10,7 +10,7 @@
 
     <el-dialog
         v-model="dialogVisible"
-        title="តើអ្នកចង់លុបសិស្សនេះមែនទេ?"
+        title="តើអ្នកចង់លុបគ្រូមែនទេ?"
         width="500"
         append-to-body
     >
@@ -50,14 +50,16 @@ const props = defineProps<{
 const form = useForm({});
 
 const handleSubmit = () => {
-    form.delete(`/admin/students/${props.data.id}`, {
+    form.delete(`/admin/teachers/${props.data.id}`, {
         preserveScroll: true,
         onSuccess: () => {
             dialogVisible.value = false;
-            ElMessage.success('លុបសិស្សជោគជ័យ');
+            ElMessage.success('លុបគ្រូបង្រៀនជោគជ័យ');
         },
         onError: () => {
-            ElMessage.error('មានបញ្ហាក្នុងការលុបសិស្ស។ សូមពិនិត្យម្តងទៀត។');
+            ElMessage.error(
+                'មានបញ្ហាក្នុងការលុបគ្រូបង្រៀន។ សូមពិនិត្យម្តងទៀត។',
+            );
         },
     });
 };

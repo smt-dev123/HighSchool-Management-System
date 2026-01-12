@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\StudentRole;
+use App\Models\StudentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
@@ -14,7 +16,13 @@ class StudentController extends Controller
      */
     public function index()
     {
+        $statuses = StudentStatus::all();
+        $roles = StudentRole::all();
+
         return Inertia::render('admin/students/Index', [
+
+            'student_statuses' => $statuses,
+            'student_roles'    => $roles,
             'students' => Student::with(['status', 'role', 'classes'])->orderBy('id', 'desc')->get(),
         ]);
     }
@@ -28,7 +36,7 @@ class StudentController extends Controller
             'student_code' => 'required|string|max:255|unique:students,student_code',
             'name_kh' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'gender' => 'required|string|in:Male,Female',
+            'gender' => 'required|string|in:M,F',
             'dob' => 'required|date',
             'address' => 'nullable|string',
             'phone' => 'nullable|string',
@@ -41,7 +49,6 @@ class StudentController extends Controller
             'role_id' => 'required|exists:student_roles,id',
             'other' => 'nullable|string',
         ]);
-
         Student::create($data);
     }
 
@@ -51,6 +58,10 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $student->load(['status', 'role', 'classes']);
+
+        return Inertia::render('admin/students/Show', [
+            'student' => $student,
+        ]);
     }
 
     /**
@@ -62,7 +73,7 @@ class StudentController extends Controller
             'student_code' => 'required|string|max:255|unique:students,student_code,' . $student->id,
             'name_kh' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'gender' => 'required|string|in:Male,Female',
+            'gender' => 'required|string|in:M,F',
             'dob' => 'required|date',
             'address' => 'nullable|string',
             'phone' => 'nullable|string',

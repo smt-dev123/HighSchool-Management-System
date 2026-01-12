@@ -7,9 +7,8 @@ import Delete from './actions/Delete.vue';
 import Update from './actions/Update.vue';
 
 const props = defineProps<{
-    students: any[];
-    student_statuses: any[];
-    student_roles: any[];
+    teachers: any[];
+    teacher_statuses: any[];
 }>();
 
 const search = ref('');
@@ -23,13 +22,10 @@ watch([search, pageSize], () => {
 
 /* Search */
 const filteredData = computed(() => {
-    if (!search.value) return props.students;
+    if (!search.value) return props.teachers;
 
-    return props.students.filter(
+    return props.teachers.filter(
         (item) =>
-            item.student_code
-                .toLowerCase()
-                .includes(search.value.toLowerCase()) ||
             item.name_kh.toLowerCase().includes(search.value.toLowerCase()) ||
             item.name_en.toLowerCase().includes(search.value.toLowerCase()),
     );
@@ -43,7 +39,7 @@ const paginatedData = computed(() => {
 </script>
 
 <template>
-    <Head title="សិស្សានុសិស្ស" />
+    <Head title="គ្រូបង្រៀន" />
 
     <AppLayout>
         <div
@@ -55,14 +51,11 @@ const paginatedData = computed(() => {
                     <el-page-header>
                         <template #content>
                             <span class="text-large font-600 mr-3"
-                                >សិស្សានុសិស្ស</span
+                                >គ្រូបង្រៀន</span
                             >
                         </template>
                         <template #extra>
-                            <Create
-                                :student_roles="student_roles"
-                                :student_statuses="student_statuses"
-                            />
+                            <Create :teacher_statuses="teacher_statuses" />
                         </template>
                     </el-page-header>
                 </el-card>
@@ -72,8 +65,8 @@ const paginatedData = computed(() => {
                     <!-- Table -->
                     <el-table :data="paginatedData" style="width: 100%">
                         <el-table-column
-                            prop="student_code"
-                            label="លេខសម្គាល់"
+                            prop="id"
+                            label="Id"
                             width="120"
                             fixed="left"
                             sortable
@@ -91,7 +84,7 @@ const paginatedData = computed(() => {
                             width="180"
                             sortable
                         />
-                        <el-table-column label="ភេទ" width="80" sortable>
+                        <el-table-column label="ភេទ" width="80">
                             <template #default="scope">
                                 {{
                                     scope.row.gender === 'M' ? 'ប្រុស' : 'ស្រី'
@@ -119,8 +112,8 @@ const paginatedData = computed(() => {
                             width="180"
                         />
                         <el-table-column
-                            prop="guardian_phone"
-                            label="លេខទូរសព្ទអាណាព្យាបាល"
+                            prop="other"
+                            label="ផ្សេងៗ"
                             width="200"
                         />
 
@@ -140,8 +133,7 @@ const paginatedData = computed(() => {
                             <template #default="scope">
                                 <Update
                                     :data="scope.row"
-                                    :student_roles="student_roles"
-                                    :student_statuses="student_statuses"
+                                    :teacher_statuses="teacher_statuses"
                                 />
                                 <Delete :data="scope.row" />
                             </template>

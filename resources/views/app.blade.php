@@ -31,7 +31,7 @@
         }
     </style>
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia>{{ config('app.name', 'ប្រព័ន្ធគ្រប់គ្រងសាលារៀន') }}</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">

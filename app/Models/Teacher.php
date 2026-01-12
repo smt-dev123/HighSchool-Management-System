@@ -27,8 +27,8 @@ class Teacher extends Model
     ];
 
     protected $casts = [
-        'dob' => 'date',
-        'join_date' => 'date',
+        'dob' => 'datetime:Y-m-d',
+        'join_date' => 'datetime:Y-m-d',
         'is_enable_account' => 'boolean',
     ];
 

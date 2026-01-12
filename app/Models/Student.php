@@ -30,7 +30,7 @@ class Student extends Model
     ];
 
     protected $casts = [
-        'dob' => 'date',
+        'dob' => 'datetime:Y-m-d',
     ];
 
     // Relationships

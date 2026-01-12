@@ -1,11 +1,11 @@
 <template>
     <el-button @click="dialogVisible = true" type="primary">
-        បន្ថែមសិស្សានុសិស្ស
+        បន្ថែមគ្រូបង្រៀន
     </el-button>
 
     <el-dialog
         v-model="dialogVisible"
-        title="បន្ថែមសិស្សានុសិស្ស"
+        title="បន្ថែមគ្រូបង្រៀន"
         width="800"
         align-center
         append-to-body
@@ -13,18 +13,6 @@
     >
         <el-form :model="form" label-width="140px" label-position="left">
             <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item
-                        label="លេខកូដសិស្ស"
-                        :error="form.errors.student_code"
-                    >
-                        <el-input
-                            v-model="form.student_code"
-                            placeholder="បញ្ជាក់លេខកូដ"
-                        />
-                    </el-form-item>
-                </el-col>
-
                 <el-col :span="12">
                     <el-form-item
                         label="ឈ្មោះជាភាសាខ្មែរ"
@@ -73,6 +61,31 @@
 
                 <el-col :span="12">
                     <el-form-item
+                        label="ថ្ងៃខែឆ្នាំចូលធ្វើការងារ"
+                        :error="form.errors.join_date"
+                    >
+                        <el-date-picker
+                            style="width: 100%"
+                            v-model="form.join_date"
+                            type="date"
+                            format="YYYY-MM-DD"
+                            value-format="YYYY-MM-DD"
+                            :disabled-date="disableJoinDate"
+                        />
+                    </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                    <el-form-item
+                        label="កម្រិតវប្បធម៍"
+                        :error="form.errors.level"
+                    >
+                        <el-input v-model="form.level" />
+                    </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                    <el-form-item
                         label="លេខទូរស័ព្ទ"
                         :error="form.errors.phone"
                     >
@@ -88,41 +101,6 @@
 
                 <el-col :span="12">
                     <el-form-item
-                        label="មកពីសាលា"
-                        :error="form.errors.from_school"
-                    >
-                        <el-input v-model="form.from_school" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item
-                        label="ឈ្មោះឪពុក"
-                        :error="form.errors.father_name"
-                    >
-                        <el-input v-model="form.father_name" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item
-                        label="ឈ្មោះម្តាយ"
-                        :error="form.errors.mother_name"
-                    >
-                        <el-input v-model="form.mother_name" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item
-                        label="លេខអាណាព្យបាល"
-                        :error="form.errors.guardian_phone"
-                    >
-                        <el-input v-model="form.guardian_phone" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item
                         label="ស្ថានភាព"
                         :error="form.errors.status_id"
                     >
@@ -132,7 +110,7 @@
                             style="width: 100%"
                         >
                             <el-option
-                                v-for="status in student_statuses"
+                                v-for="status in teacher_statuses"
                                 :key="status.id"
                                 :label="status.status_kh"
                                 :value="status.id"
@@ -142,32 +120,11 @@
                 </el-col>
 
                 <el-col :span="12">
-                    <el-form-item label="តួនាទី" :error="form.errors.role_id">
-                        <el-select
-                            v-model="form.role_id"
-                            placeholder="ជ្រើសរើស"
-                            style="width: 100%"
-                        >
-                            <el-option
-                                v-for="role in student_roles"
-                                :key="role.id"
-                                :label="role.name"
-                                :value="role.id"
-                            />
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="24">
                     <el-form-item
                         label="អាសយដ្ឋាន"
                         :error="form.errors.address"
                     >
-                        <el-input
-                            v-model="form.address"
-                            type="textarea"
-                            :rows="2"
-                        />
+                        <el-input v-model="form.address" />
                     </el-form-item>
                 </el-col>
 
@@ -180,7 +137,31 @@
                         />
                     </el-form-item>
                 </el-col>
+
+                <el-col :span="12">
+                    <el-form-item label="មានគណនី">
+                        <el-checkbox v-model="form.is_enable_account"
+                            >មានគណនីរួចរាល់</el-checkbox
+                        >
+                    </el-form-item>
+                </el-col>
             </el-row>
+            <el-upload
+                class="upload-demo"
+                drag
+                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                :on-change="handleChange"
+            >
+                <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                <div class="el-upload__text">
+                    Drop file here or <em>click to upload</em>
+                </div>
+                <template #tip>
+                    <div class="el-upload__tip">
+                        jpg/png files with a size less than 500kb
+                    </div>
+                </template>
+            </el-upload>
         </el-form>
 
         <template #footer>
@@ -199,19 +180,19 @@
 </template>
 
 <script lang="ts" setup>
+import { UploadFilled } from '@element-plus/icons-vue';
 import { useForm } from '@inertiajs/vue3';
+import type { UploadFile, UploadFiles } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 
 const props = defineProps<{
-    student_statuses: any[];
-    student_roles: any[];
+    teacher_statuses: any[];
 }>();
 
 const dialogVisible = ref(false);
 
 const form = useForm({
-    student_code: '',
     name_kh: '',
     name_en: '',
     gender: '',
@@ -219,24 +200,36 @@ const form = useForm({
     address: '',
     phone: '',
     email: '',
-    from_school: '',
-    father_name: '',
-    mother_name: '',
-    guardian_phone: '',
+    join_date: '',
+    level: '',
+    is_enable_account: true,
     profile: '',
     status_id: '',
-    role_id: '',
     other: '',
 });
 
+const disableJoinDate = (date: Date) => {
+    if (!form.dob) return true;
+
+    const dob = new Date(form.dob);
+    const minDate = new Date(dob);
+    minDate.setFullYear(dob.getFullYear() + 18);
+
+    return date < minDate;
+};
+
+const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+    console.log(uploadFile, uploadFiles);
+};
+
 const handleSubmit = () => {
-    form.post('/admin/students', {
+    form.post('/admin/teachers', {
         preserveScroll: true,
         onSuccess: () => {
             dialogVisible.value = false;
             form.reset();
             ElMessage({
-                message: 'ការបញ្ចូលទិន្នន័យសិស្សត្រូវបានជោគជ័យ!',
+                message: 'ការបញ្ចូលទិន្នន័យគ្រូត្រូវបានជោគជ័យ!',
                 type: 'success',
             });
         },

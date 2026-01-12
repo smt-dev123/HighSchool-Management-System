@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Models\TeacherStatus;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class TeacherController extends Controller
 {
@@ -13,7 +14,13 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        Teacher::with(['status', 'classes'])->get();
+        $teacher_status = TeacherStatus::all();
+
+        return Inertia::render('admin/teachers/Index', [
+
+            'teacher_statuses' => $teacher_status,
+            'teachers' => Teacher::with(['status', 'classes'])->orderBy('id', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -24,7 +31,7 @@ class TeacherController extends Controller
         $data = $request->validate([
             'name_kh' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'gender' => 'required|string|in:Male,Female',
+            'gender' => 'required|string|in:M,F',
             'dob' => 'required|date',
             'join_date' => 'required|date',
             'level' => 'nullable|string',
