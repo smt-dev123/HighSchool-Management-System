@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassType;
+use App\Models\GradeLevel;
+use App\Models\Subject;
 use App\Models\SubjectGradeLevel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class SubjectGradeLevelController extends Controller
 {
@@ -13,7 +17,13 @@ class SubjectGradeLevelController extends Controller
      */
     public function index()
     {
-        SubjectGradeLevel::all();
+
+        return Inertia::render('admin/subject_grade_levels/Index', [
+            'subject_grade_levels' => SubjectGradeLevel::with(['subject', 'gradeLevel', 'classType'])->orderBy('id', 'desc')->get(),
+            'subjects' => Subject::all(),
+            'grade_levels' => GradeLevel::all(),
+            'class_types' => ClassType::all()
+        ]);
     }
 
     /**
@@ -22,12 +32,16 @@ class SubjectGradeLevelController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name_kh' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+            'subject_id' => 'required|integer|exists:subjects,id',
+            'grade_level_id' => 'required|integer|exists:grade_levels,id',
+            'class_type_id' => 'required|integer|exists:class_types,id',
+            'full_score' => 'required|numeric',
+            'divide' => 'required|numeric',
+            'average' => 'required|numeric',
             'note' => 'nullable|string',
         ]);
 
-        SubjectGradeLevel::create($data);
+        $created = SubjectGradeLevel::create($data);
     }
 
     /**
@@ -35,7 +49,7 @@ class SubjectGradeLevelController extends Controller
      */
     public function show(SubjectGradeLevel $subjectGradeLevel)
     {
-        SubjectGradeLevel::find($subjectGradeLevel->id);
+        return $subjectGradeLevel->load(['subject', 'gradeLevel', 'classType']);
     }
 
     /**
@@ -44,8 +58,12 @@ class SubjectGradeLevelController extends Controller
     public function update(Request $request, SubjectGradeLevel $subjectGradeLevel)
     {
         $data = $request->validate([
-            'name_kh' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+            'subject_id' => 'required|integer|exists:subjects,id',
+            'grade_level_id' => 'required|integer|exists:grade_levels,id',
+            'class_type_id' => 'required|integer|exists:class_types,id',
+            'full_score' => 'required|numeric',
+            'divide' => 'required|numeric',
+            'average' => 'required|numeric',
             'note' => 'nullable|string',
         ]);
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SubjectGradeLevelController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TimeController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ Route::middleware('auth')->group(function () {
         ->names('admin.teacher');
     Route::resource('admin/subjects', SubjectController::class)
         ->names('admin.subject');
+    Route::resource('admin/subject_grade_levels', SubjectGradeLevelController::class)
+        ->names('admin.subject_grade_level');
     Route::resource('admin/times', TimeController::class)
         ->names('admin.time');
     Route::resource('admin/academic-years', AcademicYearController::class)

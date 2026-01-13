@@ -37,7 +37,7 @@ const menuItems = [
         key: '5',
         icon: DocumentChecked,
         label: 'មុខវិជ្ជាតាមកម្រិត',
-        url: 'admin.subject_grades',
+        url: 'admin.subject_grade_levels',
     },
     {
         key: '6',

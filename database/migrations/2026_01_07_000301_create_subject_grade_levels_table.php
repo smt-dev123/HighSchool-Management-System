@@ -13,8 +13,22 @@ return new class extends Migration
     {
         Schema::create('subject_grade_levels', function (Blueprint $table) {
             $table->id();
-            $table->string('name_kh');
-            $table->string('name_en');
+
+            $table->foreignId('subject_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('grade_level_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('class_type_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->double('full_score');
+            $table->double('divide');
+            $table->double('average');
             $table->string('note')->nullable();
             $table->timestamps();
         });

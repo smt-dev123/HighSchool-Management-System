@@ -17,6 +17,7 @@ class SubjectGradeLevel extends Model
         "full_score",
         "divide",
         "average",
+        "note"
     ];
 
     public function subject()
