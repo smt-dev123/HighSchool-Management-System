@@ -7,7 +7,7 @@ import Delete from './actions/Delete.vue';
 import Update from './actions/Update.vue';
 
 const props = defineProps<{
-    subjects: any[];
+    classes: any[];
 }>();
 
 const search = ref('');
@@ -21,9 +21,9 @@ watch([search, pageSize], () => {
 
 /* Search */
 const filteredData = computed(() => {
-    if (!search.value) return props.subjects;
+    if (!search.value) return props.classes;
 
-    return props.subjects.filter(
+    return props.classes.filter(
         (item) =>
             item.name_kh.toLowerCase().includes(search.value.toLowerCase()) ||
             item.name_en.toLowerCase().includes(search.value.toLowerCase()),
@@ -70,19 +70,36 @@ const paginatedData = computed(() => {
                             sortable
                         />
                         <el-table-column
-                            prop="name_kh"
-                            label="មុខវិជ្ជាជាភាសាខ្មែរ"
-                            width="180"
+                            prop="name"
+                            label="ឈ្មោះបន្ទប់"
+                            sortable
+                        />
+                        <el-table-column
+                            prop="class_type.name"
+                            label="ឈ្មោះថ្នាក់"
+                            sortable
+                        />
+                        <el-table-column
+                            prop="grade_level.name"
+                            label="ប្រភេទថ្នាក់"
+                            width="150"
                             sortable
                         />
                         <el-table-column
                             prop="name_en"
-                            label="មុខវិជ្ជាជាភាសាអង់គ្លេស"
-                            width="180"
-                            sortable
+                            label="គ្រូសរុប"
+                            width="150"
                         />
-
-                        <el-table-column prop="note" label="កំណត់ចំណាំ" />
+                        <el-table-column
+                            prop="name_en"
+                            label="សិស្សសរុប"
+                            width="150"
+                        />
+                        <el-table-column
+                            prop="academic_year.name"
+                            label="ឆ្នាំសិក្សា"
+                            width="150"
+                        />
                         <!-- Actions -->
                         <el-table-column width="180" fixed="right">
                             <template #header>

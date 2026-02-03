@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+
+import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
@@ -12,20 +16,27 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { LayoutGrid } from 'lucide-vue-next';
+
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/admin/dashboard',
+        href: dashboard(),
         icon: LayoutGrid,
     },
+];
+
+const footerNavItems: NavItem[] = [
     {
-        title: 'Students',
-        href: '/admin/students',
-        icon: LayoutGrid,
+        title: 'Github Repo',
+        href: 'https://github.com/laravel/vue-starter-kit',
+        icon: Folder,
+    },
+    {
+        title: 'Documentation',
+        href: 'https://laravel.com/docs/starter-kits#vue',
+        icon: BookOpen,
     },
 ];
 </script>
@@ -49,6 +60,7 @@ const mainNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
+            <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>

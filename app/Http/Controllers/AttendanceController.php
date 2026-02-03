@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\AttendanceLine;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class AttendanceController extends Controller
 {
@@ -13,7 +14,11 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        Attendance::with(['class', 'time', 'day', 'subjectGrade', 'teacher'])->get();
+        $attendances = Attendance::with(['class', 'time', 'day', 'subjectGrade', 'teacher'])->get();
+
+        return Inertia::render('admin/attendances/Index', [
+            'attendances' => $attendances,
+        ]);
     }
 
     /**
@@ -37,7 +42,15 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        $attendance->load(['class', 'time', 'day', 'subjectGrade', 'teacher', 'lines']);
+        $attendance->load(['class.students.student', 'time', 'day', 'subjectGrade']);
+
+        // ទាញយកវត្តមានដែលធ្លាប់កត់រួច (បើមាន)
+        $existingDetails = AttendanceLine::where('attendance_id', $attendance->id)->get();
+
+        return Inertia::render('admin/attendances/Show', [
+            'attendance' => $attendance,
+            'existingDetails' => $existingDetails,
+        ]);
     }
 
     /**

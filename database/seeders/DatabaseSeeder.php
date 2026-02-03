@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            UserRoleSeeder::class,
+            UserSeeder::class,
+
             // ១. ក្រុមឯករាជ្យ (Lookup Tables)
             StudentRoleSeeder::class,
             StudentStatusSeeder::class,

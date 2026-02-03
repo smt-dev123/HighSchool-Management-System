@@ -14,23 +14,17 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('phone', 15);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            // $table->foreignId('role_id')->constrained()->restrictOnDelete();
+            $table->foreignId('user_role_id')->constrained()->restrictOnDelete();
             // $table->foreignId('teacher_id')->nullable()->constrained()->restrictOnDelete();
 
             $table->rememberToken();
             $table->timestamps();
         });
-
-        // Schema::create('roles', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string('name');
-        //     $table->timestamps();
-        // });
-
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
