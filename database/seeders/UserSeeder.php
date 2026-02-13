@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         DB::table(table: 'users')->upsert(
             [
-                ['user_role_id' => 1, 'name' => 'SMT', 'phone' => '0123456789', 'email' => 'smt@gmail.com', 'password' => bcrypt('12345678')],
+                ['id' => '1', 'user_role_id' => 1, 'name' => 'SMT', 'phone' => '0123456789', 'email' => 'smt@gmail.com', 'password' => bcrypt('12345678')],
             ],
             ['id'],
             ['name', 'phone', 'email', 'password', 'user_role_id']

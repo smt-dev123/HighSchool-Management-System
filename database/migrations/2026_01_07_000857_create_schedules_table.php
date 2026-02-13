@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('class_id')->constrained()->restrictOnDelete();
             $table->timestamps();
+            // Class មួយ មិនគួរមាន Schedule ២
+            $table->unique('class_id');
         });
     }
 

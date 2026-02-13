@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('level');
             $table->text('address');
             $table->string('phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('profile')->nullable();
 
             $table->boolean('is_enable_account')->default(true);

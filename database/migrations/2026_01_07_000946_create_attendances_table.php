@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('subject_grade_id')->constrained('subject_grade_levels')->restrictOnDelete();
             $table->foreignId('teacher_id')->constrained()->restrictOnDelete();
             $table->timestamps();
+
+            $table->unique(['class_id', 'time_id', 'day_id', 'subject_grade_id', 'teacher_id']);
         });
     }
 

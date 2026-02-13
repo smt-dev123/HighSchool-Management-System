@@ -15,10 +15,10 @@ class UserRoleSeeder extends Seeder
     {
         DB::table(table: 'user_roles')->upsert(
             [
-                ['name' => 'superAdmin'],
-                ['name' => 'admin'],
-                ['name' => 'teacher'],
-                ['name' => 'student'],
+                ['id' => '1', 'name' => 'superAdmin'],
+                ['id' => '2', 'name' => 'admin'],
+                ['id' => '3', 'name' => 'teacher'],
+                ['id' => '4', 'name' => 'student'],
             ],
             ['id'],
             ['name']

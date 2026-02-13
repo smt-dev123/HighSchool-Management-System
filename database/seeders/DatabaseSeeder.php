@@ -21,10 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserRoleSeeder::class,
-            UserSeeder::class,
-
-            // ១. ក្រុមឯករាជ្យ (Lookup Tables)
+            // Lookup Tables
             StudentRoleSeeder::class,
             StudentStatusSeeder::class,
             TeacherStatusSeeder::class,
@@ -37,18 +34,18 @@ class DatabaseSeeder extends Seeder
             TimeSeeder::class,
             ScoreTypeSeeder::class,
             AttendanceTypeSeeder::class,
-            RoleSeeder::class, // User Roles
+            UserRoleSeeder::class,
 
-            // ២. ក្រុមទិន្នន័យគោល (Master Data)
+            // Master Data
             StudentSeeder::class,
             TeacherSeeder::class,
-            // UserSeeder::class,
+            UserSeeder::class,
 
-            // ៣. ក្រុមទំនាក់ទំនង (Relational Data)
+            // Relational Data
             SubjectGradeLevelSeeder::class,
             ClassesSeeder::class,
 
-            // ៤. ក្រុមប្រតិបត្តិការ (Transactional Data)
+            // Transactional Data
             StudentClassSeeder::class,
             TeacherClassSeeder::class,
             ScoreSeeder::class,

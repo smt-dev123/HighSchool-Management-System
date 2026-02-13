@@ -31,6 +31,8 @@ return new class extends Migration
             $table->double('average');
             $table->string('note')->nullable();
             $table->timestamps();
+
+            $table->unique(['subject_id', 'grade_level_id', 'class_type_id']);
         });
     }
 
